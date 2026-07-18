@@ -8,8 +8,17 @@ const userSchema= new mongoose.Schema({
     type: String,
     enum: ["customer", "admin"],
     default: "customer"
-   }
+   },
 
+   resetToken: {
+    type: String,
+     default: null,
+   },
+
+   resetTokenExpire: {
+    type: Date,
+    default: null,
+   }
    
 })
 

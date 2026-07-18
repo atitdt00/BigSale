@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import Sidebar from "../Components/Sidebar";
 import PaymentMethod from "../Services/PaymentMethod";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import ForgetPassword from "../pages/ForgetPassword";
 
 function Frontend({ children, showFooter = true }) {
   return (
@@ -22,6 +22,7 @@ function Frontend({ children, showFooter = true }) {
           <PaymentMethod />
           <Login/>
           <Signup/>
+          <ForgetPassword/>
           {showFooter && (
             <footer className="">
               <Footer />

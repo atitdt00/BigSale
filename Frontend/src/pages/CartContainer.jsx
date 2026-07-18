@@ -1,15 +1,16 @@
 import Frontend from "../Layouts/Frontend";
+import { useAuth } from "../context/AuthContext";
 import { useCartContext } from "../context/CartContext";
 
 function CartContainer() {
+  const {user} = useAuth();
   const { cart, setPaymentData, setOpenMethodForm, removeFromCart, descreaseQuantity, increaseQuantity } = useCartContext();
 
   const buyNowHandler = (item) => {
-    const email = sessionStorage.getItem("email");
     setPaymentData({
       productName: item.Title,
       amount: item.Price * item.quantity,
-      email,
+      email: user.email,
     });
 
     setOpenMethodForm(true);

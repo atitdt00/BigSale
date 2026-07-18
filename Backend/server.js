@@ -9,6 +9,7 @@ import userRoute from "./Routes/userRoute.js";
 import productRoute from "./Routes/productRoute.js";
 import categoryRoute from "./Routes/categoryRoute.js";
 import paymentRoute from "./Routes/paymentRoute.js";
+import forgotRoute from "./Routes/forgotRoute.js"
 
 
 const PORT = Number(process.env.PORT) || 5000;
@@ -22,6 +23,7 @@ app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
 app.use("/api/categories", categoryRoute);
 app.use("/api/payment", paymentRoute);
+app.use("/api/forgot", forgotRoute)
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}`);

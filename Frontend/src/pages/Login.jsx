@@ -1,4 +1,4 @@
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -12,23 +12,23 @@ function Login() {
   let { register, handleSubmit, reset } = useForm();
 
   //for pop-up cartContext
-  const { openLogin, setOpenLogin } = useCartContext();
+  const { openLogin, setOpenLogin,setOpenRegister , setForgotForm } = useCartContext();
 
   //Authcontext
-  const {login} = useAuth()
+  const { login } = useAuth();
 
   const onsubmit = async (data) => {
     try {
       let response = await axios.post(`${API}/api/auth/login`, data);
       if (response.data.token) {
-       login(response.data.user, response.data.token)
+        login(response.data.user, response.data.token);
         reset();
-        setOpenLogin(false)
-        toast.success(response.data.message)
-        if(response.data.user.role === "admin"){
+        setOpenLogin(false);
+        toast.success(response.data.message);
+        if (response.data.user.role === "admin") {
           navigate("/admin/dashboard");
-        }else{
-          navigate("/")
+        } else {
+          navigate("/");
         }
       } else {
         toast.error(response.data.message);
@@ -37,6 +37,19 @@ function Login() {
       toast.error(error.response?.data?.message || "login failed");
     }
   };
+
+  //handle forget password
+  const handleforget = () => {
+    setOpenLogin(false);
+    setForgotForm(true);
+  };
+
+  //redirect to signup form
+  const handleNavigation=()=>{
+    setOpenLogin(false)
+    setOpenRegister(true)
+  }
+
   if (!openLogin) return null;
 
   return (
@@ -50,17 +63,21 @@ function Login() {
             onClick={(e) => e.stopPropagation()}
             className="bg-white w-full max-w-md rounded-lg p-6 backdrop-blur-2xl"
           >
-           <div className="flex items-center justify-between">
-             <h1 className="mb-4 text-center text-4xl font-bold tracking-tight text-heading md:text-3xl lg:text-4xl">
-              Login Form
-            </h1>
-             <button type="reset"
-                onClick={() => { setOpenLogin(false); reset() }}
+            <div className="flex items-center justify-between">
+              <h1 className="mb-4 text-center text-4xl font-bold tracking-tight text-heading md:text-3xl lg:text-4xl">
+                Login Form
+              </h1>
+              <button
+                type="reset"
+                onClick={() => {
+                  setOpenLogin(false);
+                  reset();
+                }}
                 className=" text-xl font-bold"
               >
                 Close
               </button>
-           </div>
+            </div>
             <form
               onSubmit={handleSubmit(onsubmit)}
               className="mx-auto w-full  flex max-w-md flex-col justify-center gap-4"
@@ -90,12 +107,24 @@ function Login() {
                   })}
                 />
               </div>
-              <div className="flex items-center gap-2">
-                <Checkbox id="remember" />
-                <Label htmlFor="remember">Remember me</Label>
+              <div className="flex justify-between items-center ">
+                <span className="space-x-2 ">
+                  <Checkbox id="remember" />
+                  <Label htmlFor="remember" className="cursor-pointer">
+                    Remember me
+                  </Label>
+                </span>
+                <button
+                  type="button"
+                  onClick={handleforget}
+                  className="font-semibold cursor-pointer"
+                >
+                  Forget Password
+                </button>
               </div>
               <Button type="submit">Login</Button>
             </form>
+            <button onClick={handleNavigation} className="text-blue-500">Register a new Account</button>
           </div>
         </div>
       )}

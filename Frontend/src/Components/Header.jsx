@@ -3,6 +3,7 @@ import {  Link, useNavigate } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import { useCartContext } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 function Header() {
   const navigate= useNavigate()
@@ -19,6 +20,14 @@ const handleLogout=()=>{
   navigate("/")
 }
 
+
+//handle cart click show message if not user.
+const handleCartClick=(e)=>{
+  if(!loggedIn){
+    e.preventDefault()
+    toast.error("Please login to access your cart", { position: "bottom-right"})
+  }
+}
 
 //handle user Profile for navigation
 const ShowProfile=()=>{
@@ -79,6 +88,7 @@ const ShowProfile=()=>{
 
           <Link
             to="/cart"
+            onClick={handleCartClick}
             className="px-4 py-2 rounded-lg text-slate-100 text-sm md:text-lg lg:text-xl font-semibold transition-all duration-300 hover:bg-white/10 hover:text-cyan-300 hover:-translate-y-1"
           >
             Cart

@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { useForm } from "react-hook-form";
@@ -15,11 +14,11 @@ function Signup() {
     defaultValues: { role: "customer" },
   });
   const onsubmit = async (data) => {
-    if (data.password !== data.repeatPassword) {
+    const { repeatPassword, ...userdata } = data;
+    if (userdata.password !== repeatPassword) {
       toast.error("passwords do not match");
       return;
     }
-    const { repeatPassword, ...userdata } = data;
     try {
       const resp = await axios.post(`${API}/api/auth/register`, userdata);
       toast.success(resp.data.message);
@@ -43,7 +42,7 @@ function Signup() {
             className="bg-white w-full max-w-md rounded-lg p-5"
           >
             <div className="flex items-center justify-between">
-              <h1 class=" text-center text-4xl font-bold tracking-wider text-heading md:text-3xl lg:text-4xl mb-3">
+              <h1 className=" text-center text-4xl font-bold tracking-wider text-heading md:text-3xl lg:text-4xl mb-3">
                 Registration{" "}
               </h1>
               <button

@@ -13,6 +13,8 @@ import CartContainer from "./pages/CartContainer";
 import { ToastContainer } from "react-toastify";
 import ProtectRoute from "./Routes/ProtectRoute";
 import AdminRoute from "./Routes/AdminRoute";
+import ForgetPassword from "./pages/ForgetPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgetPassword/>} />
+        <Route path="/reset-password/:token" element={<ResetPassword/>} />
 
         <Route element={<ProtectRoute />}>
           <Route path="/esewa" element={<Esewa />} />

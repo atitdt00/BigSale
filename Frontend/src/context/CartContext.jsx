@@ -8,6 +8,7 @@ export const CartProvider = ({ children }) => {
   let [openMethodForm, setOpenMethodForm] = useState(false);
   let [openRegister, setOpenRegister] = useState(false);
   let [openLogin, setOpenLogin] = useState(false);
+  let [forgotForm, setForgotForm]= useState(false)
 
 
   
@@ -64,6 +65,8 @@ export const CartProvider = ({ children }) => {
         setOpenRegister,
         paymentData,
         setPaymentData,
+        forgotForm,
+        setForgotForm,
         setCart,
         cart,
         addToCart,

@@ -46,8 +46,11 @@ export const getUser = async (req, res) => {
 
 //update user
 export const updateUser = async (req, res) => {
+
+    const { name, email, password, role }= req.body;
+    const hash = await bcrypt.hash(password, 10);
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+    const user = await User.findByIdAndUpdate(req.params.id, {name, email, role,password: hash}, {
       new: true,
     });
     res.status(200).json({user, message: "user has been updated", success: true});
