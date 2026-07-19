@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import Frontend from '../Layouts/Frontend'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 const API = import.meta.env.VITE_API_URL;
 
@@ -9,14 +8,14 @@ function Sidebar() {
 
     const fetchCategories=async()=>{
         try{
-            const result= await axios.get(`${API}/api/categories`)
-            setCategories(result.data)
+            const result= await axios.get(`${API}/api/categories/`)
+            setCategories(result.data.categories)
         }catch(error){
             console.log(error)
         }
     }
     useEffect(()=>{
-        fetchCategories()
+        fetchCategories();
     },[])
   return (
     <div className='pt-2 pr-2'>

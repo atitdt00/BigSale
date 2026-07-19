@@ -3,7 +3,7 @@ import Product from "../Models/Product.js";
 //get all products
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("Category");
     res.status(200).json(products);
   } catch (error) {
     console.log(error.message);
@@ -12,9 +12,9 @@ export const getProducts = async (req, res) => {
 
 //create products
 export const createProduct = async (req, res) => {
-  const { Title, Price, Description } = req.body;
+  const { Title, Price, Category, Description } = req.body;
   try {
-   const product= await Product.create({ Title, Price, Description, Image: req.file?.path });
+   const product= await Product.create({ Title, Price, Category ,Description, Image: req.file?.path });
     res.status(200).json({product  ,message:"product added"});
   } catch (error) {
     console.log(error.message);
@@ -23,7 +23,7 @@ export const createProduct = async (req, res) => {
 //get product by id
 export const getProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate("Category");
     res.status(200).json({ product });
   } catch (error) {
     console.log(error.message);

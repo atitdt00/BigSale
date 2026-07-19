@@ -5,8 +5,8 @@ import slugify from "slugify";
 //get all Category
 export const getCategories = async (req, res) => {
   try {
-    const category = await Category.find();
-    res.status(200).json(category);
+    const categories = await Category.find();
+    res.status(200).json({categories, message: "All Categories is Received successfully"});
   } catch (error) {
     console.log(error.message);
   }
@@ -40,7 +40,7 @@ export const getCategory = async (req, res) => {
     const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
       returnDocument: "after",
     });
-    res.status(200).json({ category, message: "Category updated" });
+    res.status(200).json({ category, message: "Category, updated" });
   } catch (error) {
     console.log(error.message);
   }
@@ -50,7 +50,7 @@ export const getCategory = async (req, res) => {
 export const deleteCategory = async (req, res) => {
   try {
     await Category.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Category deleted successfully" });
+    res.status(200).json({ message: "Category, deleted successfully" });
   } catch (error) {
     console.log(error.message);
   }

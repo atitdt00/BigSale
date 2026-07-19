@@ -11,17 +11,16 @@ function ResetPassword() {
   let { register, handleSubmit } = useForm();
 
   const onsubmit = async (data) => {
-    data.prevenDefault();
     try {
       const res = await axios.post(
-        `${API}/api/forgot/reset-password/:${token}`,
+        `${API}/api/forgot/reset-password/${token}`,
         data,
       );
+      navigate("/")
       toast.success(res.data.message);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || "Reset Failed");
     }
-    navigate("/")
   };
   return (
     <div className="w-full h-screen flex justify-center items-center">
@@ -35,7 +34,7 @@ function ResetPassword() {
             type="password"
             id="reset"
             placeholder="Write a New Pasword"
-            {...register("password")}
+            {...register("password", {required : "password is required", minLength: { value: 4}, message: "password must be 4 character"})}
             className="w-full border rounded px-3 py-2"
           />
         </div>

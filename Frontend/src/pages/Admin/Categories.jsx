@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import Backend from "../../Layouts/Backend";
 import axios from "axios";
 const API = import.meta.env.VITE_API_URL;
 
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { useForm } from "react-hook-form";
-import { data, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Categories() {
   const [open, setOpen]= useState(null)
-  const [editId, setEditid] = useState(false);
-  let { register, handleSubmit, reset, setValue } = useForm();
+  const [editId, setEditid] = useState(null);
+  let { register, handleSubmit, reset, } = useForm();
   let [categories, setCategories] = useState([]);
   const getCategories = async () => {
     try {
       const respo = await axios.get(`${API}/api/categories/`);
-      setCategories(respo.data);
+      setCategories(respo.data.categories);
     } catch (error) {
       alert(error.response?.message?.data);
     }
@@ -28,10 +27,12 @@ function Categories() {
         const rp = await axios.put(`${API}/api/categories/${editId}`, data, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        toast.success(rp.data.message)
       } else {
         const rp = await axios.post(`${API}/api/categories`, data, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        toast.success(rp.data.message)
       }
       setOpen(null)
       setEditid(false);
@@ -71,7 +72,7 @@ function Categories() {
           Manage Products Category
         </h1>
         <button 
-          onClick={() => {reset(null); setEditid(null); setOpen(true); }}
+          onClick={() => {reset(); setEditid(null); setOpen(true); }}
           className="text-blue-300 bg-slate-800 px-3 py-1 rounded-lg text-xl font-bold transition-all duration-200 hover:bg-slate-700 hover:ring-2"
         >
           Add Category
@@ -94,7 +95,7 @@ function Categories() {
             </header>
             <form onSubmit={handleSubmit(onsubmit)} className="w-full h-full  text-white flex flex-col gap-4 p-5">
               <div>
-                <label className="block mb-2 font-[500]" htmlFor="Title">
+                <label className="block mb-2 font-md" htmlFor="Title">
                   Category Title
                 </label>
                 <input {...register('name')} id="Title"
@@ -106,7 +107,7 @@ function Categories() {
               
               <div className="w-full h-full flex items-center justify-between flex-wrap gap-2 max-md:px-2 px-10">
                 <button type="submit" className="font-semibold bg-gray-600 px-4 py-2 rounded-2xl transition-all duration-200 hover:ring-1 hover:scale-110">{editId ? "Update" : "ADD"}</button>
-                <button type="button" onClick={()=>reset(null)} className="font-semibold bg-gray-600 px-4 py-2 rounded-2xl transition-all duration-200 hover:ring-1 hover:scale-110">clear</button>
+                <button type="button" onClick={()=>reset()} className="font-semibold bg-gray-600 px-4 py-2 rounded-2xl transition-all duration-200 hover:ring-1 hover:scale-110">clear</button>
               </div>
             </form>
           </div>

@@ -218,10 +218,10 @@ function Users() {
       )}
       `{" "}
       <div className="shadow-xl w-full min-h-70 p-5 bg-slate-900/10 rounded-2xl overflow-x-auto">
-        <table className="w-full shrink border table-fixed text-white">
+        <table className="w-full shrink border table-auto text-white overflow-hidden">
           <thead>
             <tr className="">
-              <th className="border  px-4 py-3 text-xs sm:text-sm md:text-base">
+              <th className="border px-4 py-3 text-xs sm:text-sm md:text-base">
                 ID
               </th>
               <th className="border  px-4 py-3 text-xs sm:text-sm md:text-base">
@@ -264,14 +264,14 @@ function Users() {
                   <div className="flex flex-col md:flex-row gap-2">
                     <button
                       onClick={() => handleEdit(item)}
-                      className="bg-blue-600 text-white px-3 py-1 rounded mr-2 transition-all duration-150 hover:underline "
+                      className="bg-blue-600 text-white px-3 py-1 rounded mr-2 transition-all duration-150 hover:underline w-full"
                     >
                       Edit
                     </button>
 
                     <button
                       onClick={() =>{ handleDelete(item._id)}}
-                      className="bg-red-500 text-white px-3 py-1 rounded transition-all duration-150 hover:underline"
+                      className="w-full bg-red-500 text-white px-3 py-1 rounded transition-all duration-150 hover:underline"
                     >
                       Delete
                     </button>

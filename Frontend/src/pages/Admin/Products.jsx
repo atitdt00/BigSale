@@ -3,13 +3,24 @@ import Backend from "../../Layouts/Backend";
 
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 const API = import.meta.env.VITE_API_URL;
 
 function Products() {
   const [open, setOpen] = useState(null);
-  let [editId, setEditid] = useState(false);
+  let [editId, setEditid] = useState(null);
   let { register, handleSubmit, reset } = useForm();
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const getCategories = async () => {
+    try {
+      const respon = await axios.get(`${API}/api/categories`);
+      setCategories(respon.data.categories);
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+    }
+  };
 
   const getProducts = async () => {
     try {
@@ -27,9 +38,12 @@ function Products() {
 
       formData.append("Title", data.Title);
       formData.append("Price", data.Price);
+      formData.append("Category", data.Category);
       formData.append("Description", data.Description);
 
-      formData.append("Image", data.Image[0]);
+      if (data.Image?.[0]) {
+        formData.append("Image", data.Image[0]);
+      }
 
       if (editId) {
         await axios.put(`${API}/api/products/${editId}`, formData, {
@@ -40,6 +54,7 @@ function Products() {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
+      toast.success(editId ? "Product updated" : "Product added");
       setEditid(false);
       getProducts();
       setOpen(null);
@@ -49,16 +64,17 @@ function Products() {
     }
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     try {
       const token = sessionStorage.getItem("token");
-      axios.delete(`${API}/api/products/${id}`, {
+      await axios.delete(`${API}/api/products/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      toast.success("product deleted Successfully");
       getProducts();
       reset();
     } catch (error) {
-      alert(error.response?.data?.message || error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
@@ -68,14 +84,14 @@ function Products() {
     reset({
       Title: item.Title,
       Price: item.Price,
+      Category: item.Category?._id || item.Category,
       Description: item.Description,
     });
   };
   useEffect(() => {
     getProducts();
+    getCategories();
   }, []);
-
-  console.log(products)
   return (
     <Backend>
       <div className=" w-full h-auto flex justify-between mb-5">
@@ -84,7 +100,7 @@ function Products() {
         </h1>
         <button
           onClick={() => {
-            reset(null);
+            reset();
             setEditid(false);
             setOpen(true);
           }}
@@ -131,15 +147,35 @@ function Products() {
               </div>
               <div>
                 <label className="block mb-2 font-md" htmlFor="Price">
-                  Product Pirce
+                  Product Price
                 </label>
                 <input
                   {...register("Price")}
                   id="Price"
                   className="block w-full px-5 py-2 rounded-lg transition-all duration-300 border hover:ring-2"
                   type="number"
-                  placeholder="write your Product price"
+                  placeholder="Product price"
                 />
+              </div>
+              <div className="space-x-2 mb-2">
+                <label htmlFor="categories">Categories</label>
+                <select
+                  className="border flex-1 w-full rounded-lg px-5 py-2 transition-all duration-300 hover:ring-2 "
+                  id="categories"
+                  {...register("Category")}
+                >
+                  {Array.isArray(categories) &&
+                    categories.map((item) => (
+                      <option
+                        key={item._id}
+                        value={item._id}
+                        name="category"
+                        className="text-black"
+                      >
+                        {item.name}
+                      </option>
+                    ))}
+                </select>
               </div>
               <div>
                 <label className="block mb-2 font-md" htmlFor="Description">
@@ -150,7 +186,7 @@ function Products() {
                   id="Description"
                   className="block w-full px-5 py-2 rounded-lg transition-all duration-300 border hover:ring-2"
                   type="text"
-                  placeholder="write your Product price"
+                  placeholder="write Product Description"
                 />
               </div>
               <div>
@@ -162,7 +198,6 @@ function Products() {
                   id="image"
                   className="block w-full px-5 py-2 rounded-lg transition-all duration-300 border hover:ring-2 file:text-blue-300"
                   type="file"
-                  placeholder="write your Product price"
                 />
               </div>
               <div className="w-full h-full flex items-center justify-between px-10">
@@ -174,7 +209,7 @@ function Products() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => reset(null)}
+                  onClick={() => reset()}
                   className="font-semibold bg-gray-600 px-4 py-2 rounded-2xl transition-all duration-200 hover:ring-1 hover:scale-110"
                 >
                   clear
@@ -186,14 +221,15 @@ function Products() {
       )}
 
       <div className="shadow-xl w-full min-h-70 p-5 bg-slate-900/10 rounded">
-        <table className="w-full border table-fixed text-white ">
+        <table className="w-full border  text-white overflow-hidden">
           <thead>
             <tr className="">
               <th className="border p-2 ">ID</th>
               <th className="border p-2">Image</th>
               <th className="border p-2">Title</th>
               <th className="border p-2">Price</th>
-              <th className="border p-2">Decription</th>
+              <th className="border p-2">Category</th>
+              <th className="border p-2">Description</th>
               <th className="border p-2">Action</th>
             </tr>
           </thead>
@@ -206,11 +242,12 @@ function Products() {
                   <img
                     src={item.Image}
                     alt={item.Title}
-                    className="w-16 h-16 object-cover rounded-lg mx-auto"
+                    className="w-16 h-16 object-cover rounded-lg"
                   />
                 </td>
                 <td className="border p-2">{item.Title}</td>
                 <td className="border p-2">{item.Price}</td>
+                <td className="border p-2">{item.Category?.name}</td>
                 <td className="border p-2">{item.Description}</td>
                 <td className="border p-2 space-y-2">
                   <button

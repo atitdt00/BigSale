@@ -6,7 +6,7 @@ function AdminSidebar() {
   return (
     <>
       <div>
-        <h1 className="bg-slate-800 w-full h-10 flex justify-center space-x-2 items-center text-xl sm:text-xl md:text-2xl lg:text-3xl font-extrabold tracking-widest py-6">
+        <h1 className="bg-slate-800 w-full max-w-md h-10 flex justify-center space-x-2 items-center text-xl sm:text-xl md:text-2xl lg:text-3xl font-extrabold tracking-widest py-6">
           <i className="text-white text-xl">
             <TbCategoryFilled />
           </i>

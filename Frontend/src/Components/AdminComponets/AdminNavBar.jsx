@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import bird from "../../image/bird.jpg";
 import { useAuth } from "../../context/AuthContext";
@@ -8,6 +8,7 @@ function AdminNavBar() {
   //LogoutContext 
   const { logout }= useAuth()
 
+  const navigate=useNavigate()
 
   let [profile, setProfile] = useState(false);
 
@@ -29,8 +30,8 @@ function AdminNavBar() {
         />
         {profile && (
           <ul className="absolute top-15 right-0 z-40 w-48 h-auto bg-slate-500 rounded-2xl flex flex-col justify-center py-1 overflow-hidden cursor-pointer ">
-            <li className="text-xl pl-5 text-blue-300 font-semibold rounded transition duration-200 hover:font-bold hover:bg-slate-700">
-              Profile
+            <li onClick={()=>navigate("/")} className="text-xl pl-5 text-blue-300 font-semibold rounded transition duration-200 hover:font-bold hover:bg-slate-700">
+              Home
             </li>
             <li
               onClick={() => logout()}
