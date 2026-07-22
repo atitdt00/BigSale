@@ -4,6 +4,7 @@ import Backend from "../../Layouts/Backend";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useCartContext } from "../../context/CartContext";
 const API = import.meta.env.VITE_API_URL;
 
 function Products() {
@@ -12,6 +13,8 @@ function Products() {
   let { register, handleSubmit, reset } = useForm();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const { progress, setProgress } = useCartContext();
+  const [loading, setLoading] = useState(false);
 
   const getCategories = async () => {
     try {
@@ -32,6 +35,7 @@ function Products() {
   };
   const onsubmit = async (data) => {
     try {
+      setLoading(true);
       const token = sessionStorage.getItem("token");
 
       const formData = new FormData();
@@ -52,6 +56,12 @@ function Products() {
       } else {
         await axios.post(`${API}/api/products/`, formData, {
           headers: { Authorization: `Bearer ${token}` },
+          onUploadProgress: (ProgressEvent) => {
+            const percent = Math.round(
+              (ProgressEvent.loaded * 100) / ProgressEvent.total,
+            );
+            setProgress(percent);
+          },
         });
       }
       toast.success(editId ? "Product updated" : "Product added");
@@ -60,7 +70,7 @@ function Products() {
       setOpen(null);
       reset();
     } catch (error) {
-      alert(error.response?.data?.message || error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
@@ -203,12 +213,22 @@ function Products() {
               <div className="w-full h-full flex items-center justify-between px-10">
                 <button
                   type="submit"
-                  className="font-semibold bg-gray-600 px-4 py-2 rounded-2xl transition-all duration-200 hover:ring-1 hover:scale-110"
+                  disabled={loading}
+                  className={`font-semibold px-4 py-2 rounded-2xl transition-all duration-200 ${
+                    loading
+                      ? "bg-gray-500 cursor-not-allowed"
+                      : "bg-gray-600 hover:ring-1 hover:scale-110"
+                  }`}
                 >
-                  {editId ? "Update" : "ADD"}
+                  {loading
+                    ? `uploading...${progress}%`
+                    : editId
+                      ? "Update"
+                      : "ADD"}
                 </button>
                 <button
                   type="button"
+                  disabled={loading}
                   onClick={() => reset()}
                   className="font-semibold bg-gray-600 px-4 py-2 rounded-2xl transition-all duration-200 hover:ring-1 hover:scale-110"
                 >

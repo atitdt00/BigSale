@@ -9,7 +9,7 @@ export const CartProvider = ({ children }) => {
   let [openRegister, setOpenRegister] = useState(false);
   let [openLogin, setOpenLogin] = useState(false);
   let [forgotForm, setForgotForm]= useState(false)
-
+  let [progress, setProgress]= useState(0);
 
   
   const [paymentData, setPaymentData] = useState({
@@ -69,6 +69,8 @@ export const CartProvider = ({ children }) => {
         setForgotForm,
         setCart,
         cart,
+        progress,
+        setProgress,
         addToCart,
         removeFromCart, 
         increaseQuantity,

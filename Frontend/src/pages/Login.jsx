@@ -124,7 +124,7 @@ function Login() {
               </div>
               <Button type="submit">Login</Button>
             </form>
-            <button onClick={handleNavigation} className="text-blue-500">Register a new Account</button>
+            <button onClick={handleNavigation} className="text-blue-500 cursor-pointer hover:underline ">Register a new Account</button>
           </div>
         </div>
       )}
