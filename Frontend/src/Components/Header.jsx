@@ -73,10 +73,10 @@ function Header() {
   return (
     <>
       <div className="relative w-full min-h-10 flex justify-between items-center">
-        <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-widest uppercase text-white flex flex-wrap">
+        <Link to={"/"} className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-widest uppercase text-white flex flex-wrap">
           <span className="text-blue-400">BIG</span>
           <span className="text-orange-400">SALE</span>
-        </h1>
+        </Link>
         <ul className="hidden sm:flex items-center gap-3 md:gap-6 lg:gap-8">
           <Link
             to="/"

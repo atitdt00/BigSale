@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 
 function Footer() {
@@ -9,7 +10,7 @@ function Footer() {
         <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
           <div className="md:flex md:justify-between">
             <div className="mb-6 md:mb-0">
-              <a href="https://flowbite.com/" className="flex items-center">
+              <Link href="/" className="flex items-center">
                 <img
                   src="https://flowbite.com/docs/images/logo.svg"
                   className="h-7 me-3"
@@ -18,7 +19,7 @@ function Footer() {
                 <span className="text-heading self-center text-2xl font-semibold whitespace-nowrap bg-gradient-to-r from-orange-600 via-blue-300 to-blue-600 bg-clip-text text-transparent">
                   Big Sale
                 </span>
-              </a>
+              </Link>
             </div>
             <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
               <div>
@@ -27,9 +28,9 @@ function Footer() {
                 </h2>
                 <ul className="text-body font-medium">
                   <li className="mb-4">
-                    <a href="/home" className="hover:underline">
+                    <Link href="/" className="hover:underline">
                       BigSale
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a href="https://tailwindcss.com/" className="hover:underline">
@@ -84,9 +85,9 @@ function Footer() {
           <div className="sm:flex sm:items-center sm:justify-between">
             <span className="text-sm text-body sm:text-center">
               © 2026{" "}
-              <a href="https://flowbite.com/" className="hover:underline">
+              <Link href={"/"} className="hover:underline">
                 BigSale™
-              </a>
+              </Link>
               . All Rights Reserved.
             </span>
             <div className="flex mt-4 sm:justify-center sm:mt-0">
