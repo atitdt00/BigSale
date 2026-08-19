@@ -107,7 +107,7 @@ function Products() {
       Description: item.Description,
     });
   };
-  useEffect(() => {
+  useEffect(() => { 
     getProducts();
     getCategories();
   }, []);
