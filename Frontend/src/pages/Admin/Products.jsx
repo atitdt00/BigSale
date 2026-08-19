@@ -46,7 +46,12 @@ function Products() {
       formData.append("Description", data.Description);
 
       if (data.Image?.[0]) {
-        formData.append("Image", data.Image[0]);
+        const image= data.Image[0];
+        if(image.size > 3 * 1024 *1024 ){
+          toast.error("Image size must be less than 2 MB");
+          return;
+        }
+        formData.append("Image", image);
       }
 
       if (editId) {
@@ -70,7 +75,11 @@ function Products() {
       setOpen(null);
       reset();
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+      toast.error(error.response?.data?.message || error.message || "something wrong");
+    }
+    finally{
+      setLoading(false)
+      setProgress(0);
     }
   };
 
